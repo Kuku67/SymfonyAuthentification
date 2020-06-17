@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="uk-margin-medium-left uk-margin-medium-top">
+        <h1>Bienvenue</h1>
+        {% if app.user %}
+        <h2>Liste des utilisateurs ({{ users|length }})</h2>
+        <table class="uk-table uk-table-divider uk-table-striped uk-table-middle uk-table-responsive">
+            <thead>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Mail</th>
+                    <th>Role</th>
+                    <th>Date d'inscription</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.pseudo }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                    {% for role in user.roles %}
+                        {{ role | replace({
+                            "ROLE_": "",
+                            "USER": "Utilisateur",
+                            "ADMIN" : "Administrateur"
+                            }) }}
+                    <br> 
+                    {% endfor %}
+                    </td>
+                    <td>{{ user.registerdate | date("d-m-Y") }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <h2>Vous devez être connecté pour voir la liste des utilisateurs.</h2>
+        {% endif %}
+    </section>
+{% endblock %}
